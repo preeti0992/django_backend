@@ -2,9 +2,22 @@
 
 ## Setup Django
 
+#### Setup virtual environment
 ```
 pip install virtualenv
-source venv3/bin/activate
+virtualenv venv
+python3 -m venv venv3
+venv3\Scripts\activate.ps1
+```
+
+#### Setup virtual environment mac
+```
+pip install virtualenv
+virtualenv venv
+source venv/bin/activate
+```
+Install requirements
+```
 pip install -r requirements.txt
 ```
 
@@ -60,6 +73,10 @@ grant all privileges on database rootdb to django;
 windows : `reset_db.bat`
 
 mac : `reset_db.sh`
+
+
+## Create requireents.txt
+`pip freeze > requirements.txt`
 
 ---------------
 ## Setup django for new project
