@@ -65,7 +65,7 @@ def index(request):
             "choices": choices,
         })
 
-    print('result ',result)
+    # print('result ',result)
     # data = serializers.serialize('json', result)
     # return HttpResponse(data, content_type="application/json")
     return JsonResponse({'result' : result})
