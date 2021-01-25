@@ -83,8 +83,8 @@ mac : `reset_db.sh`
 ```
 pip install django
 pip install djangorestframework django-cors-headers gunicorn
-django-admin startproject django_backend
-python manage.py startapp backend
+django-admin startproject server
+python manage.py startapp server
 python manage.py migrate
 python manage.py runserver
 ```

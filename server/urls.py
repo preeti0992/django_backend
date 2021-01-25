@@ -1,4 +1,4 @@
-"""django_backend URL Configuration
+"""server URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
@@ -18,6 +18,6 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('polls/', include('polls.urls')),
+    path('main_app/', include('main_app.urls')),
     path('admin/', admin.site.urls),
 ]

@@ -8,11 +8,11 @@ from django.core import serializers
 
 
 def index(request):
-    # return HttpResponse("Hello, world. You're at the polls index.")
+    # return HttpResponse("Hello, world. You're at the main_app index.")
 
     from django.utils import timezone
     # Import the model classes we just wrote.
-    from polls.models import Choice, Question
+    from main_app.models import Choice, Question
 
     # Create a new Question.
     # Support for time zones is enabled in the default settings file, so
@@ -74,7 +74,7 @@ def index(request):
 def questions(request):
     from django.utils import timezone
     # Import the model classes we just wrote.
-    from polls.models import Choice, Question
+    from main_app.models import Choice, Question
 
     questions = Question.objects.all()
 
@@ -85,7 +85,7 @@ def questions(request):
 def choices(request):
     from django.utils import timezone
     # Import the model classes we just wrote.
-    from polls.models import Choice, Question
+    from main_app.models import Choice, Question
 
     choices = Choice.objects.all()
 
@@ -96,7 +96,7 @@ def choices(request):
 def delete(request):
     from django.utils import timezone
     # Import the model classes we just wrote.
-    from polls.models import Choice, Question
+    from main_app.models import Choice, Question
 
     # delete everything
     Question.objects.all().delete()
