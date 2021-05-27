@@ -10,7 +10,7 @@
   }
 
   /* styles for todo app */
-  .todo-title {
+  /*.todo-title {
     cursor: pointer;
   }
   .completed-todo {
@@ -26,4 +26,4 @@
   .tab-list > span.active {
     background-color: #282c34;
     color: #ffffff;
-  }
+  } */
