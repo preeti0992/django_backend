@@ -11,7 +11,7 @@ import {
   Label
 } from "reactstrap";
 
-export default class CustomModal extends Component {
+export default class InputModal extends Component {
   constructor(props) {
     super(props);
     this.state = {

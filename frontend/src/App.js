@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-    import Modal from "./components/Modal";
+    import InputModal from "./components/InputModal";
     import axios from "axios";
 
     class App extends Component {
@@ -133,7 +133,7 @@ import React, { Component } from "react";
               </div>
             </div>
             {this.state.modal ? (
-              <Modal
+              <InputModal
                 activeItem={this.state.activeItem}
                 toggle={this.toggle}
                 onSave={this.handleSubmit}
