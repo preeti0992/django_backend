@@ -1,24 +1,14 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Input,
-  Label
-} from "reactstrap";
+import { Button, Modal, Form } from "react-bootstrap";
 
 export default class InputModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeItem: this.props.activeItem
+      activeItem: this.props.activeItem,
     };
   }
-  handleChange = e => {
+  handleChange = (e) => {
     let { name, value } = e.target;
     if (e.target.type === "checkbox") {
       value = e.target.checked;
@@ -29,48 +19,48 @@ export default class InputModal extends Component {
   render() {
     const { toggle, onSave } = this.props;
     return (
-      <Modal isOpen={true} toggle={toggle}>
-        <ModalHeader toggle={toggle}> Todo Item </ModalHeader>
-        <ModalBody>
+      <Modal show={true} onHide={toggle}>
+        <Modal.Header> Todo Item </Modal.Header>
+        <Modal.Body>
           <Form>
-            <FormGroup>
-              <Label for="title">Title</Label>
-              <Input
+            <Form.Group>
+              <Form.Label htmlFor="title">Title</Form.Label>
+              <Form.Control
                 type="text"
                 name="title"
                 value={this.state.activeItem.title}
                 onChange={this.handleChange}
                 placeholder="Enter Todo Title"
               />
-            </FormGroup>
-            <FormGroup>
-              <Label for="description">Description</Label>
-              <Input
-                type="text"
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="description">Description</Form.Label>
+              <Form.Control
+                as="textarea"
                 name="description"
                 value={this.state.activeItem.description}
                 onChange={this.handleChange}
                 placeholder="Enter Todo description"
               />
-            </FormGroup>
-            <FormGroup check>
-              <Label for="completed">
-                <Input
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="completed">
+                <Form.Check
                   type="checkbox"
-                  name="completed"
+                  type="checkbox"
+                  label="Completed"
                   checked={this.state.activeItem.completed}
                   onChange={this.handleChange}
                 />
-                Completed
-              </Label>
-            </FormGroup>
+              </Form.Label>
+            </Form.Group>
           </Form>
-        </ModalBody>
-        <ModalFooter>
+        </Modal.Body>
+        <Modal.Footer>
           <Button color="success" onClick={() => onSave(this.state.activeItem)}>
             Save
           </Button>
-        </ModalFooter>
+        </Modal.Footer>
       </Modal>
     );
   }
