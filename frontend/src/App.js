@@ -154,6 +154,9 @@ class App extends Component {
                   <Button onClick={this.createItem}>Add task</Button>
                 </Col>
                 <Col md="auto" className="justify-content-md-right">
+                  <span className="label other">Filter</span>
+                </Col>
+                <Col md="auto" className="justify-content-md-right">
                   {this.renderDropDown()}
                 </Col>
               </Row>
