@@ -1,14 +1,16 @@
 import React, { Component } from "react";
-import InputModal from "./components/InputModal";
 import axios from "axios";
-import Button from "react-bootstrap/Button";
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Dropdown from "react-bootstrap/Dropdown";
-import ListGroup from "react-bootstrap/ListGroup";
+import {
+  Container,
+  Row,
+  Col,
+  Jumbotron,
+  Button,
+  ListGroup,
+  Dropdown,
+} from "react-bootstrap";
 import "./App.css";
+import InputModal from "./components/InputModal";
 
 const FILTER_OPTIONS = {
   All: "All",
@@ -27,6 +29,7 @@ class App extends Component {
         completed: false,
       },
       todoList: [],
+      inputModal: false,
     };
     this.url = "http://127.0.0.1:8000/api/todos/";
   }
@@ -127,7 +130,11 @@ class App extends Component {
         </Dropdown.Toggle>
         <Dropdown.Menu style={{ backgroundColor: "#73a47" }}>
           {Object.keys(FILTER_OPTIONS).map((op) => {
-            return <Dropdown.Item key={op+"_key"} eventKey={op}>{op}</Dropdown.Item>;
+            return (
+              <Dropdown.Item key={op + "_key"} eventKey={op}>
+                {op}
+              </Dropdown.Item>
+            );
           })}
         </Dropdown.Menu>
       </Dropdown>
@@ -144,9 +151,7 @@ class App extends Component {
             <Container>
               <Row>
                 <Col>
-                  <Button onClick={this.createItem}>
-                    Add task
-                  </Button>
+                  <Button onClick={this.createItem}>Add task</Button>
                 </Col>
                 <Col md="auto" className="justify-content-md-right">
                   {this.renderDropDown()}
