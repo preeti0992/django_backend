@@ -1,22 +1,26 @@
 import React, { Component } from "react";
 import InputModal from "./components/InputModal";
 import axios from "axios";
-import styled from "styled-components";
-import {
-  PBLUE,
-  SBLUE,
-  WHITE,
-  BLACK,
-  PLIGHTBLUE,
-  PDARKBLUE,
-  REDDANGER,
-} from "./colorConstants";
+import Button from "react-bootstrap/Button";
+import Jumbotron from "react-bootstrap/Jumbotron";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Dropdown from "react-bootstrap/Dropdown";
+import ListGroup from "react-bootstrap/ListGroup";
+import "./App.css";
+
+const FILTER_OPTIONS = {
+  All: "All",
+  Completed: "Completed",
+  Incomplete: "Incomplete",
+};
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      viewCompleted: false,
+      selectFilter: "All",
       activeItem: {
         title: "",
         description: "",
@@ -24,7 +28,6 @@ class App extends Component {
       },
       todoList: [],
     };
-    // this.url = "http://localhost:8000/api/todos/"
     this.url = "http://127.0.0.1:8000/api/todos/";
   }
 
@@ -67,155 +70,92 @@ class App extends Component {
     this.setState({ activeItem: item, inputModal: !this.state.inputModal });
   };
 
-  displayCompleted = (status) => {
-    if (status) {
-      return this.setState({ viewCompleted: true });
-    }
-    return this.setState({ viewCompleted: false });
-  };
-
-  renderTabList = () => {
-    const TabDiv = styled.div`
-      margin: 1em 0em 0.2em 0em;
-    `;
-
-    const TabSpan = styled.span`
-      padding: 0.25em 1em;
-      margin-right: 0.1em;
-      align-self: center;
-      flex: 2;
-      font-size: 1.2em;
-      color: ${WHITE};
-      background-color: ${(props) => (props.active ? PLIGHTBLUE : PDARKBLUE)};
-      border: 2px solid ${(props) => (props.active ? PLIGHTBLUE : PDARKBLUE)};
-      border-radius: 5px 5px 0px 0px;
-    `;
-
-    return (
-      <TabDiv>
-        <TabSpan
-          onClick={() => this.displayCompleted(false)}
-          active={!this.state.viewCompleted}
-        >
-          Incomplete
-        </TabSpan>
-        <TabSpan
-          onClick={() => this.displayCompleted(true)}
-          active={this.state.viewCompleted}
-        >
-          Complete
-        </TabSpan>
-      </TabDiv>
-    );
-  };
-
   renderItems = () => {
-    const { viewCompleted } = this.state;
-    const newItems = this.state.todoList.filter(
-      (item) => item.completed === viewCompleted
-    );
-
-    const Button = styled.button`
-      color: ${WHITE};
-      font-size: 1em;
-      margin: 1em;
-      padding: 0.25em 1em;
-      background-color: ${SBLUE};
-      border: 2px solid ${SBLUE};
-      border-radius: 3px;
-    `;
-
-    const DeleteButton = styled.button`
-      color: ${WHITE};
-      font-size: 1em;
-      margin: 1em;
-      padding: 0.25em 1em;
-      background-color: ${REDDANGER};
-      border: 2px solid ${REDDANGER};
-      border-radius: 3px;
-    `;
-
-    const Li = styled.li`
-      color: ${BLACK};
-      background-color: ${WHITE};
-      margin: 1em;
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
-    `;
-
-    const TextSpan = styled.span`
-      padding: 0.25em 1em;
-      align-self: center;
-      flex: 2;
-      font-size: 1.2em;
-      text-decoration: ${(props) => (props.lineThrough ? "line-through" : "")};
-    `;
-
-    return newItems.map((item) => (
-      <Li
-        key={item.id}
-        // className="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <TextSpan
-          lineThrough={this.state.viewCompleted}
-          title={item.description}
+    let newItems = this.state.todoList;
+    if (this.state.selectFilter === FILTER_OPTIONS.Completed) {
+      newItems = this.state.todoList.filter((item) => item.completed === true);
+    } else if (this.state.selectFilter === FILTER_OPTIONS.Incomplete) {
+      newItems = this.state.todoList.filter((item) => item.completed === false);
+    }
+    return newItems.map((item) => {
+    return (
+        <ListGroup.Item key={item.id}>
+          <Container>
+            <Row>
+              {item.completed ? (
+                <Col className="completed-task">
+                  <h2>{item.title}</h2>
+                  <p>{item.description}</p>
+                </Col>
+              ) : (
+                <Col>
+                  <h2>{item.title}</h2>
+                  <p>{item.description}</p>
+                </Col>
+              )}
+              <Col md="auto" className="justify-content-md-right">
+                <Button variant="secondary" onClick={() => this.editItem(item)}>
+                  {" "}
+                  Edit{" "}
+                </Button>
+              </Col>
+              <Col md="auto" className="justify-content-md-right">
+                <Button
+                  variant="danger"
+                  onClick={() => this.handleDelete(item)}
         >
-          {item.title}
-        </TextSpan>
-        <span>
-          <Button onClick={() => this.editItem(item)}> Edit </Button>
-          <DeleteButton onClick={() => this.handleDelete(item)}>
-            Delete
-          </DeleteButton>
-        </span>
-      </Li>
-    ));
+                  {" "}
+                  Delete{" "}
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+        </ListGroup.Item>
+    );
+    });
+  };
+
+  renderDropDown = () => {
+    return (
+      <Dropdown
+        onSelect={(e) => {
+          this.setState({ selectFilter: e });
+        }}
+      >
+        <Dropdown.Toggle variant="secondary btn-sm" id="dropdown-basic">
+          {FILTER_OPTIONS[this.state.selectFilter]}
+        </Dropdown.Toggle>
+        <Dropdown.Menu style={{ backgroundColor: "#73a47" }}>
+          {Object.keys(FILTER_OPTIONS).map((op) => {
+            return <Dropdown.Item key={op+"_key"} eventKey={op}>{op}</Dropdown.Item>;
+          })}
+        </Dropdown.Menu>
+      </Dropdown>
+    );
   };
 
   render() {
-    const H1 = styled.h1`
-      color: ${WHITE};
-      // margin: 1em;
-      padding: 0.25em 1em;
-      background-color: ${PBLUE};
-      border: 2px solid ${PBLUE};
-    `;
-
-    const Ul = styled.ul`
-      color: ${WHITE};
-      // margin: 1em;
-      padding: 0em 0em;
-      border: 2px solid ${PLIGHTBLUE};
-      list-style-type: none;
-    `;
-
-    const Div = styled.div`
-      color: ${WHITE};
-      margin: 1em;
-      padding: 0.25em 1em;
-    `;
-
-    const Button = styled.button`
-      color: ${WHITE};
-      font-size: 1em;
-      margin: 1em;
-      padding: 0.25em 1em;
-      background-color: ${SBLUE};
-      border: 2px solid ${SBLUE};
-      border-radius: 3px;
-    `;
-
     return (
-      <Div>
-        <H1>Todo app</H1>
-        <div>
           <div>
-            <Button onClick={this.createItem}>Add task</Button>
-          </div>
-          {this.renderTabList()}
-          <Ul>{this.renderItems()}</Ul>
-        </div>
+        <Container>
+          <br />
+          <Jumbotron>
+            <h1>Todo app</h1>
+            <Container>
+              <Row>
+                <Col>
+                  <Button onClick={this.createItem}>
+                    Add task
+                  </Button>
+                </Col>
+                <Col md="auto" className="justify-content-md-right">
+                  {this.renderDropDown()}
+                </Col>
+              </Row>
+            </Container>
+            <ListGroup>{this.renderItems()}</ListGroup>
+          </Jumbotron>
+        </Container>
         {this.state.inputModal ? (
           <InputModal
             activeItem={this.state.activeItem}
@@ -223,7 +163,7 @@ class App extends Component {
             onSave={this.handleSubmit}
           />
         ) : null}
-      </Div>
+      </div>
     );
   }
 }

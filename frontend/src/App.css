@@ -1,3 +1,14 @@
+/* @import "~bootstrap/scss/bootstrap"; */
+
+button{
+  margin-bottom: 1em;
+}
+
+.completed-task{
+  color: #808080;
+  text-decoration: line-through;
+}
+
 /* .App {
   text-align: center;
 }
